@@ -85,16 +85,17 @@ class CanvasViewController: UIViewController {
         
         let translation = sender.translation(in: view)
         
-        
-        
         if(sender.state == .began){
             // imageView now refers to the face that you panned on
             var imageView = sender.view as! UIImageView
             
+            let pan = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
            
             //Create a new image view that has the same image
             //as the one you're currently panning.
             newlyCreatedFace = UIImageView(image: imageView.image)
+            newlyCreatedFace.addGestureRecognizer(pan)
+            newlyCreatedFace.isUserInteractionEnabled = true
            
             
             //newlyCreatedFace.transform = view.transform.scaledBy(x: 2.0, y: 2.0)
@@ -130,6 +131,27 @@ class CanvasViewController: UIViewController {
             }, completion: nil)
             
         }
+    }
+    
+    func pan(_ gesture: UIPanGestureRecognizer){
+        let translation = gesture.translation(in: view)
+        
+        if gesture.state == .began {
+            newlyCreatedFace = gesture.view as! UIImageView
+            newlyCreatedFaceOriginalCenter = newlyCreatedFace.center
+            UIView.animate(withDuration:0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options:[] ,
+                           animations: { () -> Void in
+                            self.newlyCreatedFace.transform = self.view.transform.scaledBy(x: 2.0, y: 2.0)
+            }, completion: nil)
+        } else if gesture.state == .changed {
+            newlyCreatedFace.center = CGPoint(x: newlyCreatedFaceOriginalCenter.x + translation.x, y: newlyCreatedFaceOriginalCenter.y + translation.y)
+        } else if gesture.state == .ended {
+            UIView.animate(withDuration:0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options:[] ,
+                           animations: { () -> Void in
+                            self.newlyCreatedFace.transform = self.view.transform.scaledBy(x: 1.0, y: 1.0)
+            }, completion: nil)
+        }
+        
     }
 
     @IBAction func arrowClicked(_ sender: UITapGestureRecognizer) {
