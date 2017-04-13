@@ -72,6 +72,10 @@
                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="down_arrow" id="749-iV-SaB">
                                         <rect key="frame" x="178" y="8" width="20" height="14"/>
                                         <autoresizingMask key="autoresizingMask"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="3h3-Vy-fcS" appends="YES" id="yA0-HX-T8o"/>
+                                        </connections>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -123,6 +127,11 @@
                         <action selector="didPanFace:" destination="BYZ-38-t0r" id="5me-1n-GEW"/>
                     </connections>
                 </panGestureRecognizer>
+                <tapGestureRecognizer id="3h3-Vy-fcS">
+                    <connections>
+                        <action selector="arrowClicked:" destination="BYZ-38-t0r" id="Ghp-vg-Pea"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="85.5" y="152.5"/>
         </scene>

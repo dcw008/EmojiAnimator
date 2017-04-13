@@ -28,8 +28,12 @@ class CanvasViewController: UIViewController {
     //original center for the new face
     var newlyCreatedFaceOriginalCenter: CGPoint!
     
+    var isTrayOpen: Bool!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        isTrayOpen = true
         
         //initialize tray up, down and offset fields
         trayDownOffset = 210
@@ -64,12 +68,14 @@ class CanvasViewController: UIViewController {
                 UIView.animate(withDuration:0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options:[] ,
                                animations: { () -> Void in
                                 self.trayView.center = self.trayDown
+                                self.isTrayOpen = false
                 }, completion: nil)
             } else{
                 //it is moving up
                 UIView.animate(withDuration:0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options:[] ,
                                animations: { () -> Void in
                                 self.trayView.center = self.trayUp
+                                self.isTrayOpen = true
                 }, completion: nil)
             }
         }
@@ -91,7 +97,12 @@ class CanvasViewController: UIViewController {
             newlyCreatedFace = UIImageView(image: imageView.image)
            
             
-            newlyCreatedFace.transform = view.transform.scaledBy(x: 2.0, y: 2.0)
+            //newlyCreatedFace.transform = view.transform.scaledBy(x: 2.0, y: 2.0)
+            
+            UIView.animate(withDuration:0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options:[] ,
+                           animations: { () -> Void in
+                            self.newlyCreatedFace.transform = self.view.transform.scaledBy(x: 2.0, y: 2.0)
+            }, completion: nil)
             
             //Add the new face to the main view
             view.addSubview(newlyCreatedFace)
@@ -113,11 +124,34 @@ class CanvasViewController: UIViewController {
 
             
         } else if(sender.state == .ended){
-            newlyCreatedFace.transform = view.transform.scaledBy(x: 1.0, y: 1.0)
+            UIView.animate(withDuration:0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options:[] ,
+                           animations: { () -> Void in
+                            self.newlyCreatedFace.transform = self.view.transform.scaledBy(x: 1.0, y: 1.0)
+            }, completion: nil)
             
         }
     }
 
+    @IBAction func arrowClicked(_ sender: UITapGestureRecognizer) {
+        
+        print("arrow clicked")
+        print(isTrayOpen)
+        if(isTrayOpen == true){
+            UIView.animate(withDuration:0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options:[] ,
+                           animations: { () -> Void in
+                            self.trayView.center = self.trayDown
+                            self.isTrayOpen = false
+            }, completion: nil)
+            
+        } else{
+            UIView.animate(withDuration:0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options:[] ,
+                           animations: { () -> Void in
+                            self.trayView.center = self.trayUp
+                            self.isTrayOpen = true
+            }, completion: nil)
+            
+        }
+    }
     /*
     // MARK: - Navigation
 
